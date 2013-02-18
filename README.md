@@ -9,6 +9,4 @@ It connects to the router via telnet, logs in as SuperUser using the router's se
 
 If you have a Thompson O2 router, then this app may work for you. If not then it's extremely unlikely that it will work!
 
-master/screenshot/Screenshot.png
-
-![Screenshot](master/screenshot/Screenshot.png)
+![Screenshot](https://raw.github.com/jcul/O2RouterRestart/master/screenshot/Screenshot.png)
