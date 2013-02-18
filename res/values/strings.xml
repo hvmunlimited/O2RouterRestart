@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">O2 Router Restart</string>
+    <string name="menu_settings">Settings</string>
+    <string name="notConnected">Not Connected</string>
+    <string name="restart">RESTART</string>
+    <string name="setChangePass">Set / Change Password</string>
+    <string name="mustConnect">You must be connected to wifi to restart the router</string>
+
+</resources>
