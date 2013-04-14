@@ -9,6 +9,6 @@ It connects to the router via telnet, logs in as SuperUser using the router's se
 
 If you have a Thompson O2 router, then this app may work for you. If not then it's extremely unlikely that it will work!
 
-You can download the latest apk by clicking [here](https://github.com/jcul/O2RouterRestart/blob/master/bin/O2RouterRestart.apk?raw=true).
+You can download the latest apk by clicking [here](https://github.com/jcul/O2RouterRestart/blob/master/dist/O2RouterRestart.apk?raw=true).
 
 ![Screenshot](https://raw.github.com/jcul/O2RouterRestart/master/screenshot/Screenshot.png)
