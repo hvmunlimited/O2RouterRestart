@@ -4,9 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.text.Editable;
 import android.view.Menu;
 import android.view.View;
@@ -20,8 +18,17 @@ public class MainActivity extends Activity {
 	private Button restartButton;
 	private Button passButton;
 	private TextView StatusText;
+	private String WifiSSID;
 	
 	private Boolean Restarting = false;
+	
+	private BroadcastReceiver broadcastReceiver = new BroadcastReceiver()
+	{
+		public void onReceive(Context C, Intent I)
+		{
+			UpdateWifi();
+		}
+	};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +39,16 @@ public class MainActivity extends Activity {
 		restartButton = (Button) findViewById(R.id.button1);
 		passButton = (Button) findViewById(R.id.button2);
 		
-		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		WifiInfo info = wifi.getConnectionInfo();
-		final String wifiStatus = info.getSSID();
-		
-		if (wifiStatus != null)
-		{
-			StatusText.setText(wifiStatus == null ? "Not Connected" : wifiStatus);
-			restartButton.setEnabled(true);
-			passButton.setEnabled(true);
-		}
-		
 		restartButton.setOnClickListener(new OnClickListener(){
 			
 			@Override
 			public void onClick(View v)
 			{
+				if (WifiSSID == null)
+					return;
+				
 				SharedPreferences Prefs = getPreferences(Context.MODE_PRIVATE);
-				String WifiPass = Prefs.getString(wifiStatus, null);
+				String WifiPass = Prefs.getString(WifiSSID, null);
 				
 				if (WifiPass == null)
 				{
@@ -75,6 +74,9 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v)
 			{
+				if (WifiSSID == null)
+					return;
+				
 				AlertDialog.Builder alert = new AlertDialog.Builder(context);
 				alert.setTitle("Password");
 				alert.setMessage("Enter router serial number");
@@ -87,7 +89,7 @@ public class MainActivity extends Activity {
 						Editable value = input.getText();
 						SharedPreferences Prefs = getPreferences(Context.MODE_PRIVATE);
 						SharedPreferences.Editor editor = Prefs.edit();
-						editor.putString(wifiStatus, value.toString());
+						editor.putString(WifiSSID, value.toString());
 						editor.commit();
 					}
 				});
@@ -96,7 +98,37 @@ public class MainActivity extends Activity {
 			}
 		});
 	}
-
+	
+	@Override
+	public void onResume()
+	{
+		UpdateWifi();
+		
+		IntentFilter intentFilter = new IntentFilter();
+		intentFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+		this.registerReceiver(broadcastReceiver, intentFilter);
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause()
+	{
+		this.unregisterReceiver(broadcastReceiver);
+		super.onPause();
+	}
+	
+	
+	private void UpdateWifi()
+	{
+		WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		WifiInfo info = wifi.getConnectionInfo();
+		WifiSSID = info.getSSID();
+		
+		StatusText.setText(WifiSSID == null ? "Not Connected" : WifiSSID);
+		restartButton.setEnabled(WifiSSID != null);
+		passButton.setEnabled(WifiSSID != null);
+	}
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
