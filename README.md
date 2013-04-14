@@ -11,4 +11,6 @@ If you have a Thompson O2 router, then this app may work for you. If not then it
 
 You can download the latest apk by clicking [here](https://github.com/jcul/O2RouterRestart/blob/master/dist/O2RouterRestart.apk?raw=true).
 
+Also available on the play store [here](https://play.google.com/store/apps/details?id=com.jackculhane.RouterRestart).
+
 ![Screenshot](https://raw.github.com/jcul/O2RouterRestart/master/images/Screenshot.png)
